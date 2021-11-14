@@ -15,6 +15,19 @@ def handler(event, context):
         '''
         [TASK] Send an event to Amazon EventBridge. Use the payload variable as the data and client to interact with EventBridge API
         '''
+
+        response = client.put_events(
+            Entries = [
+                {
+                    'Source': 'lab1-bdc-dispatch',
+                    'DetailType': 'message-received',
+                    'Detail': json.dumps(payload),
+                    'EventBusName': os.getenv("EVENT_BUS_NAME")
+                }
+            ]
+        )
+
+        
         logger.info("Message dispatched")
         return "Message dispatched"
     except Exception as e:

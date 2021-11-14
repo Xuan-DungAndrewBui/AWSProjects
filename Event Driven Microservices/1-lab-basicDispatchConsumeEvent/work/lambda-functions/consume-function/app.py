@@ -8,5 +8,6 @@ def handler(event, context):
         '''
         [TASK] Logs event variable to Amazon CloudWatch Logs. This way we know that Producer emitted a message and this function will consume that event.
         '''
+        print(event)
     except Exception as e:
         logger.error(e)
