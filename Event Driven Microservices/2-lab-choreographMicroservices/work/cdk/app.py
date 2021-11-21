@@ -119,10 +119,25 @@ class CdkStack(core.Stack):
         '''
         [TASK] Create EventBridge pattern for order_created
         '''
-
+        ep_order_created = _eb.EventPattern(
+            detail_type=["order_created"]
+        )
         '''
         [TASK] Create EventBridge rule for order_created. Define 3 targets into this rule: invoice service, fulfilment service, forecasting service.
         '''
+        er_order_created = _eb.Rule(
+            self,
+            id = "lab2-cm-order_created_rule",
+            enabled=True,
+            event_pattern=ep_order_created,
+            event_bus=eb,
+            rule_name="order_created_event_rule",
+            targets=[
+                _ebt.LambdaFunction(handler=fn_lambda_invoice_service),
+                _ebt.LambdaFunction(handler=fn_lambda_fulfilment_service),
+                _ebt.LambdaFunction(handler=fn_lambda_forecasting_service)
+            ]
+        )
 
         '''
         [ADDITIONAL TASK] Create EventBridge pattern for fulfilment_completed
